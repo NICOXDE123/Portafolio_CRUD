@@ -10,7 +10,7 @@ $result = $conn->query("SELECT * FROM proyectos ORDER BY created_at DESC");
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <link rel="icon" href="../../assets/imgs/icon.png" />
-  <title>Clase Semana 12 - Ejemplo CRUD</title>
+  <title>Prueba 03</title>
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
