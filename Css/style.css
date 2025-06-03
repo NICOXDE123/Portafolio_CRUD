@@ -1,0 +1,44 @@
+/* style-custom.css */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2 {
+  font-weight: 600;
+  color: #1a73e8;
+}
+
+.project-card {
+  border: 1px solid #dee2e6;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.project-image {
+  max-width: 130px;
+  max-height: 130px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.btn-sm i {
+  margin-right: 4px;
+}
+
+.card-title {
+  color: #343a40;
+  font-weight: 600;
+}
+.card h2 {
+  font-weight: bold;
+}
+
+.form-control:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.2rem rgba(25,135,84,.25);
+}
