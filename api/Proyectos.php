@@ -1,15 +1,32 @@
 <?php
+/*// Mostrar errores (solo en desarrollo)
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+// Cabecera JSON
 header('Content-Type: application/json');
+
+// Conexión a la base de datos
 include 'config.php';
 
+// Obtener el método de la petición
 $method = $_SERVER['REQUEST_METHOD'];
-$request = explode('/', trim($_SERVER['PATH_INFO'], '/'));
-$id = isset($request[0]) ? intval($request[0]) : null;
 
+// Obtener el ID desde la URL si existe
+$id = null;
+if (isset($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO'] !== '/') {
+    $request = explode('/', trim($_SERVER['PATH_INFO'], '/'));
+    if (isset($request[0]) && is_numeric($request[0])) {
+        $id = intval($request[0]);
+    }
+}
+
+// Función para obtener JSON del cuerpo
 function getInput() {
     return json_decode(file_get_contents("php://input"), true);
 }
 
+// Manejo de métodos HTTP
 switch ($method) {
     case 'GET':
         if ($id) {
@@ -28,29 +45,29 @@ switch ($method) {
     case 'POST':
         $d = getInput();
         $stmt = $conn->prepare("INSERT INTO proyectos (titulo, descripcion, url_github, url_produccion, imagen) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss",$d['titulo'],$d['descripcion'],$d['url_github'],$d['url_produccion'],$d['imagen']);
+        $stmt->bind_param("sssss", $d['titulo'], $d['descripcion'], $d['url_github'], $d['url_produccion'], $d['imagen']);
         $stmt->execute();
-        echo json_encode(["success"=>true,"id"=>$stmt->insert_id]);
+        echo json_encode(["success" => true, "id" => $stmt->insert_id]);
         break;
 
     case 'PATCH':
         $d = getInput();
         $sets = [];
-        foreach ($d as $k=>$v){
-            $sets[] = "$k='{$conn->real_escape_string($v)}'";
+        foreach ($d as $k => $v) {
+            $sets[] = "$k='" . $conn->real_escape_string($v) . "'";
         }
-        $conn->query("UPDATE proyectos SET ".implode(",",$sets)." WHERE id=$id");
-        echo json_encode(["success"=>true]);
+        $conn->query("UPDATE proyectos SET " . implode(",", $sets) . " WHERE id=$id");
+        echo json_encode(["success" => true]);
         break;
 
     case 'DELETE':
         $conn->query("DELETE FROM proyectos WHERE id=$id");
-        echo json_encode(["success"=>true]);
+        echo json_encode(["success" => true]);
         break;
 
     default:
         http_response_code(405);
-        echo json_encode(["error"=>"Método no permitido"]);
+        echo json_encode(["error" => "Método no permitido"]);
         break;
 }
 ?>
